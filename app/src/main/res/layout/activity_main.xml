@@ -1,0 +1,147 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.2"
+        android:id="@+id/layoutBanner"
+        android:background="#ffffff">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageViewLogo"
+            android:layout_weight="0.2"
+            android:src="@mipmap/logo"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:gravity="top|left"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_vertical" />
+
+        <WebView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/webIndexTop"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_weight="1"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:layout_marginTop="5dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        android:layout_weight="0.9"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:id="@+id/layoutNoticia"
+        android:visibility="visible"
+        android:layout_marginTop="2dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8"
+                android:id="@+id/layoutNoticiaPrincipal">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/layoutVideo">
+
+                    <com.google.android.youtube.player.YouTubePlayerView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/youTubePalyer"
+                        android:layout_gravity="center_horizontal"
+                        android:visibility="visible"
+                        android:layout_weight="1"
+                        android:layout_marginBottom="2dp" />
+
+                    <VideoView
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:id="@+id/videoView"
+                        android:layout_marginBottom="2dp"
+                        android:layout_weight="1"
+                        android:visibility="gone"
+                        android:layout_gravity="center_horizontal" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:layout_marginLeft="2dp">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Titulo"
+                            android:id="@+id/txtTitle"
+                            android:textStyle="bold"
+                            android:textSize="20sp"
+                            android:layout_marginLeft="2dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="SubTitulo"
+                            android:id="@+id/txtSubTitle"
+                            android:textStyle="bold"
+                            android:textSize="16sp"
+                            android:layout_marginLeft="2dp" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/webIndexMain"
+                    android:layout_marginLeft="5dp"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:id="@+id/layoutNoticiaSide">
+
+                <WebView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/webIndexSide"
+                    android:layout_marginRight="1dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
