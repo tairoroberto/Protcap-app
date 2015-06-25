@@ -12,7 +12,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false">
+        android:hardwareAccelerated="true">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -28,14 +28,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".ChamaInicialReceiver" >
-            <intent-filter>
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <action android:name="BROADCAST_RECEIVER_START_ACTIVITY" />
-            </intent-filter>
-        </receiver>
-
         <activity
             android:name=".VideoFullActivity"
             android:label="@string/title_activity_video_full" >

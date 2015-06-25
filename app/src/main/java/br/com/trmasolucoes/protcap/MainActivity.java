@@ -191,7 +191,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
                 try {
                     synchronized (this) {
 
-                        wait(60000*10);
+                        wait(60000*60*8);
                         mblnClicou = true;
                     }
                 } catch (InterruptedException ex) {
@@ -548,9 +548,11 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
                                     Intent intent = new Intent(MainActivity.this,VideoFullActivity.class);
                                     intent.putExtra("srcVideo", srcVideo.toString());
-                                    intent.putExtra("time",videoView.getCurrentPosition());
+                                    intent.putExtra("time", videoView.getCurrentPosition());
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     startActivity(intent);
+                                    MainActivity.this.finish();
+
                                 }
                             });
                         }
