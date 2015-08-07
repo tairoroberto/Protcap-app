@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -76,6 +77,9 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
     private Uri srcVideo;
     private static final String PREF_NAME = "MainActivity";
     private String serverAddress;
+
+    private Handler handler;
+    private Runnable timedTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,17 +153,27 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
             webIndexTop.setWebViewClient(new WebViewClient() {
 
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                    Toast.makeText(MainActivity.this, "SEM CONEXÃO COM INTERNET! - ERRO = "+ description  , Toast.LENGTH_SHORT).show();
-                    webIndexTop.setVisibility(View.GONE);
+                    Toast.makeText(MainActivity.this, "SEM CONEXÃO COM INTERNET! - ERRO = " + description, Toast.LENGTH_SHORT).show();
+                    webIndexTop.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return super.shouldOverrideUrlLoading(view, url);
                 }
             });
 
             webIndexSide.setWebViewClient(new WebViewClient() {
 
                 public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-                    Toast.makeText(MainActivity.this, "SEM CONEXÃO COM INTERNET! - ERRO = "+ description , Toast.LENGTH_SHORT).show();
-                    webIndexSide.setVisibility(View.GONE);
-                    webIndexMain.setVisibility(View.GONE);
+                    Toast.makeText(MainActivity.this, "SEM CONEXÃO COM INTERNET! - ERRO = " + description, Toast.LENGTH_SHORT).show();
+                    webIndexSide.setVisibility(View.INVISIBLE);
+                    webIndexMain.setVisibility(View.INVISIBLE);
+                }
+
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    return super.shouldOverrideUrlLoading(view, url);
                 }
             });
 
@@ -178,40 +192,29 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
 
 
 
-
-
-
-
         /**************************************************************************************/
-        /**            Thead que roda enquanto espera para abrir tela principal do App			 */
+        /**            Thead que roda enquanto espera para abrir tela principal do App		 */
         /*************************** ********************************************************/
-        mSplashThread = new Thread() {
+        handler = new Handler();
+        timedTask = new Runnable() {
             @Override
             public void run() {
-                try {
-                    synchronized (this) {
-
-                        wait(60000*60*8);
-                        mblnClicou = true;
-                    }
-                } catch (InterruptedException ex) {
-                }
-                /**************************************************************************************/
-                /**                        Se for clicado Carrega a Activity Principal				 */
-                /*************************** ********************************************************/
-                if (mblnClicou) {
-                    MainActivity.this.finish();
-
-                    //Intent intent = new Intent("BROADCAST_RECEIVER_START_ACTIVITY");
-                    Intent intent = new Intent(MainActivity.this,MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-
-                }
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                handler.removeCallbacks(timedTask);
+                startActivity(intent);
+                finish();
             }
         };
 
-        mSplashThread.start();
+        //reload na activity a cada 10 minutos
+        handler.postDelayed(timedTask, 60000 * 10);
+
+        /**************************************************************************************/
+        /**            Thead que roda enquanto espera para abrir tela principal do App		 */
+        /*************************** ********************************************************/
+
+
 
 
         imageViewLogo.setOnClickListener(new View.OnClickListener() {
@@ -392,6 +395,15 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
                     layoutNoticia.setBackgroundColor(resposta[3]);
                     layoutNoticia.setBackgroundColorBanner(resposta[4]);
 
+                    Log.i("Script", "\n \n");
+                    Log.i("Script","\n \n");
+                    Log.i("Script", "Id Noticia: " + layoutNoticia.getId());
+                    Log.i("Script", "Show Main: " + layoutNoticia.getShowMain());
+                    Log.i("Script", "Show Side: " + layoutNoticia.getShowSide());
+                    Log.i("Script", "Bacground Color: " + layoutNoticia.getBackgroundColor());
+                    Log.i("Script", "Bacground Color Banner: " + layoutNoticia.getBackgroundColorBanner());
+                    Log.i("Script","\n \n");
+
                     //muda a cor dos layouts coforme a cor que esta guardada no webservice
                     linearLayoutNoticia.setBackgroundColor(Color.parseColor(layoutNoticia.getBackgroundColor()));
                     linearLayoutBanner.setBackgroundColor(Color.parseColor(layoutNoticia.getBackgroundColorBanner()));
@@ -463,7 +475,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
                 //Log.i("Script","Resposta: "+answer);
 
                 try{
-                    Log.i("Script", "Resposta noticia:" + answe2);
+                    Log.i("Script", "Resposta noticia: " + answe2);
 
                     String resposta[] = answe2.split("@-@");
                     noticia.setId(Long.parseLong(resposta[0]));
@@ -476,16 +488,19 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
                     noticia.setTipoVideo(resposta[7]);
 
 
-
-                    Log.i("Script", "Id:" + noticia.getId());
-                    Log.i("Script","TITLE:" + noticia.getTitle());
-                    Log.i("Script","SUBTITLE:" + noticia.getSubTitle());
-                    Log.i("Script",",COR-TITLE:" + noticia.getCorTitle());
-                    Log.i("Script","COR-SUBTITLE:" + noticia.getCorsubTitle());
-                    Log.i("Script","MIDIA:" + noticia.getMidia());
-                    Log.i("Script","TIPO-MIDIA:" + noticia.getTipoMidia());
-                    Log.i("Script","TIPO-VIDEO:" + noticia.getTipoVideo());
-                    Log.i("Script","Servidor e midia:" + serverAddress + noticia.getMidia());
+                    Log.i("Script", "\n \n");
+                    Log.i("Script","\n \n");
+                    Log.i("Script", "Id: " + noticia.getId());
+                    Log.i("Script","TITLE: " + noticia.getTitle());
+                    Log.i("Script","SUBTITLE: " + noticia.getSubTitle());
+                    Log.i("Script","COR-TITLE: " + noticia.getCorTitle());
+                    Log.i("Script","COR-SUBTITLE: " + noticia.getCorsubTitle());
+                    Log.i("Script","MIDIA: " + noticia.getMidia());
+                    Log.i("Script","TIPO-MIDIA: " + noticia.getTipoMidia());
+                    Log.i("Script","TIPO-VIDEO: " + noticia.getTipoVideo());
+                    Log.i("Script","Servidor e midia: " + serverAddress + noticia.getMidia());
+                    Log.i("Script","\n \n");
+                    Log.i("Script","\n \n");
 
                     //verifica se midia esta nula, e se a midia for um link do you tube esconde o webview
                     //e mostra so o youtubeView
@@ -550,6 +565,7 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
                                     intent.putExtra("srcVideo", srcVideo.toString());
                                     intent.putExtra("time", videoView.getCurrentPosition());
                                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    handler.removeCallbacks(timedTask);
                                     startActivity(intent);
                                     MainActivity.this.finish();
 
@@ -567,6 +583,18 @@ public class MainActivity extends YouTubeBaseActivity implements YouTubePlayer.O
                        //String urlMain = "http://helpdesk.protcap.com.br:8585/intranet2/public/index-android-main";
                         String urlMain = serverAddress + "index-android-main";
                         webIndexMain.loadUrl(urlMain);
+                        webIndexMain.setWebViewClient(new WebViewClient(){
+                            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                                Toast.makeText(MainActivity.this, "SEM CONEXÃO COM INTERNET! - ERRO = " + description, Toast.LENGTH_SHORT).show();
+                                webIndexSide.setVisibility(View.INVISIBLE);
+                                webIndexMain.setVisibility(View.INVISIBLE);
+                            }
+
+                            @Override
+                            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                                return super.shouldOverrideUrlLoading(view, url);
+                            }
+                        });
                     }
 
                     Log.i("Script","GetNoticia Resposta servidor: "+answe2);

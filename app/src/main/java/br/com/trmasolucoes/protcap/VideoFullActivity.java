@@ -49,8 +49,8 @@ public class VideoFullActivity extends Activity {
 
             }else{
                 Intent intent1 = new Intent(VideoFullActivity.this,MainActivity.class);
-                intent1.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent1);
+                finish();
             }
         }
 
